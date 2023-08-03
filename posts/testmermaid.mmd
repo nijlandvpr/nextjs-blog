@@ -1,0 +1,32 @@
+sequenceDiagram
+    participant Staging
+    participant Original
+    participant Committee
+
+    activate Original
+    Staging->>Original: Submitted
+    activate Committee
+    Original->>Committee: Ready for Review
+    deactivate Original
+    loop snapshot
+        Committee->>Committee: Review No. x
+    end
+    Committee->>Staging: Stips or Tabled
+    deactivate Committee
+    activate Original
+    Staging->>Original: Resubmitted
+    loop snapshot
+        Original->>Original: Resub No. x
+    end
+    activate Committee
+    Original->>Committee: Resubmitted
+    deactivate Original
+    loop snapshot
+        Committee->>Committee: Review No. x
+    end
+    Committee->>Staging: Stips or Tabled
+    Committee->>Original: Approved
+    deactivate Committee
+    activate Original
+    Original->>Original: Finalize
+    deactivate Original
